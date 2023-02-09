@@ -39,9 +39,12 @@ io.on("connect", (socket) => {
         callBack(Room)
     })
 })
-// Login.jsx page - Register link, media links, make the login button contained within the background?
-// Navbar - Make each button clicked highlighted like the default state of the 'Home' button.
-// Chat - Make the sender appear as well as the message/ delete the ':' before the messages.
+// Login.jsx page - Register link, media links, make the login button contained within the background? I
+// Navbar - Make each button clicked highlighted like the default state of the 'Home' button. I
+// Chat - Make the sender appear as well as the message/ delete the ':' before the messages. 
+// MessageController - The 'createMessage' function is getting user = undefined. 
+// MongoDB - Add messages to the rooms (push them into the messages array in the rooms collection). 
+// MongoDB - Use Postman to add messages to the messages collection (fix the 'createMessage function). 
 
 app.use(express.json())
 app.use(cors())
@@ -51,4 +54,5 @@ app.post("/createRoom", roomController.createRoom)
 app.post("/joinRoom", roomController.joinRoom)
 app.post("/createMessage", messageController.createMessage)
 app.get("/getRoomMessages", roomController.getRoomMessages)
+app.post("/updateRoom", roomController.updateRoom)
 app.listen(2002, () => console.log("Listening on port 2002"))

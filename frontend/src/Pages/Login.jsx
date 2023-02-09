@@ -1,11 +1,33 @@
 import { useState } from "react"
 import axios from "axios"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom"
 
-export default function Login({setLoading}) {
+export default function Login({ setLoading }) {
     const navigate = useNavigate()
     const [signEmail, setSignEmail] = useState("")
     const [signPassword, setSignPassword] = useState("")
+    // const remMe = document.getElementById("exampleCheck2"),
+    // emailInput = document.getElementById("exampleFormControlInput1")
+
+    // if (localStorage.checkbox && localStorage.checkbox !== "") {
+    //     remMe.setAttribute("checked, checked")
+    //     emailInput.value = localStorage.signEmail
+    // } 
+    // else {
+    //     remMe.removeAttribute("checked")
+    //     emailInput.value = ""
+    // }
+
+    // function RememberMe() {
+    //     if (remMe.checked && emailInput.value !== "") {
+    //         localStorage.signEmail = emailInput.value
+    //         localStorage.checkbox = remMe.value
+    //     }
+    //     else {
+    //         localStorage.signEmail = ""
+    //         localStorage.checkbox = ""
+    //     }
+    // }
 
     const handleLogin = () => {
         setLoading(true)
@@ -16,6 +38,9 @@ export default function Login({setLoading}) {
             .then((data) => {
                 localStorage.setItem('token', JSON.stringify(data.data.token))
                 localStorage.setItem('id', JSON.stringify(data.data._id))
+                const userFirstName = data.data.userfirstname
+                console.log(data.data)
+                localStorage.setItem('userfirstname', JSON.stringify(userFirstName))
                 console.log(data)
                 setLoading(false)
                 JSON.parse(localStorage.getItem('token')) ? navigate("/") : setLoading(true)
@@ -43,21 +68,25 @@ export default function Login({setLoading}) {
                             <form>
                                 <div className="flex flex-row items-center justify-center lg:justify-start">
                                     <p className="text-lg mb-0 mr-4">Sign in with</p>
-                                    <button
-                                        type="button"
-                                        data-mdb-ripple="true"
-                                        data-mdb-ripple-color="light"
-                                        className="inline-block p-3 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out mx-1"
-                                    >
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" className="w-4 h-4">
-                                            <path
-                                                fill="currentColor"
-                                                d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z"
-                                            />
-                                        </svg>
-                                    </button>
+                                    <Link to={"https://www.facebook.com/help/537592652938493"}>
+                                        <button
 
+                                            type="button"
+                                            data-mdb-ripple="true"
+                                            data-mdb-ripple-color="light"
+                                            className="inline-block p-3 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out mx-1"
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" className="w-4 h-4">
+                                                <path
+                                                    fill="currentColor"
+                                                    d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z"
+                                                />
+                                            </svg>
+                                        </button>
+                                    </Link>
+                                    <Link to={"https://twitter.com/en/privacy"}>
                                     <button
+
                                         type="button"
                                         data-mdb-ripple="true"
                                         data-mdb-ripple-color="light"
@@ -70,7 +99,8 @@ export default function Login({setLoading}) {
                                             />
                                         </svg>
                                     </button>
-
+                                    </Link>
+                                    <Link to={"https://www.linkedin.com/legal/privacy-policy"}>
                                     <button
                                         type="button"
                                         data-mdb-ripple="true"
@@ -84,6 +114,7 @@ export default function Login({setLoading}) {
                                             />
                                         </svg>
                                     </button>
+                                    </Link>
                                 </div>
 
                                 <div
@@ -119,12 +150,14 @@ export default function Login({setLoading}) {
                                             className="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
                                             id="exampleCheck2"
                                         />
-                                        <label className="form-check-label inline-block text-gray-800" htmlFor="exampleCheck2"
+                                        <label
+                                        // onClick={RememberMe()} 
+                                        className="form-check-label inline-block text-gray-800" htmlFor="exampleCheck2"
                                         >Remember me</label>
                                     </div>
                                     <a href="#!" className="text-gray-800">Forgot password?</a>
 
-                                    
+
                                 </div>
 
                                 <div className="text-center lg:text-left">
@@ -137,10 +170,13 @@ export default function Login({setLoading}) {
                                     </button>
                                     <p className="text-sm font-semibold mt-2 pt-1 mb-0">
                                         Don't have an account?
+                                        <Link to="/Register">
                                         <a
+                                            
                                             href="#!"
                                             className="text-red-600 hover:text-red-700 focus:text-red-700 transition duration-200 ease-in-out"
                                         > Register</a>
+                                        </Link>
                                     </p>
                                 </div>
                             </form>

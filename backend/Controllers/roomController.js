@@ -1,6 +1,7 @@
 const ChatRoom = require("../Models/RoomTemplate")
 const ChatUser = require("../Models/UserTemplate")
 const ChatMessage = require("../Models/MessageTemplate")
+const messageController = require("../Controllers/messageController")
 
 exports.createRoom = async (req, res) => {
     const { roomname, participants, messages } = req.body
@@ -42,8 +43,22 @@ exports.getRoomMessages = (req, res) => {
         if (!room) return res.status(404).send('Room Not Found')
         if (!messages) return res.status(403).send('No Messages to Display in the Selected Room')
         res.status(200).json({
-            message: `Room ${ room } Messages Downloaded`,
+            message: `Room ${room} Messages Downloaded`,
             messages: room.messages
+        })
     })
-})
-    }
+}
+
+exports.updateRoom = (req, res) => {
+    console.log("hi")
+    ChatRoom.findOne({ _id: room._id }, (error, room) => {
+        if (error) return res.status(500).send(error)
+        messageController.createMessage(req, res, (data) => {
+            ChatRoom.findOneAndUpdate({ messages }, { messages: [...messages, req.body.message] })
+            if (error) return res.status(500).send(error)
+            res.status(200).json({
+                message: `Message Added to Room ${room}`
+            })
+        })
+    })
+}

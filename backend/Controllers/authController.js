@@ -11,7 +11,7 @@ exports.register = async (req, res) => {
             res.status(500).send(error)
         }
         else {
-            res.status(200).json({ message: "New User Created" })
+            res.status(200).json({ message: "New User Created", userfirstname })
         }
     })
 }
@@ -36,7 +36,7 @@ exports.login = (req, res) => {
                 }
                 else {
                     const token = jwt.sign({ id: user._id }, process.env.JWT_TOKEN)
-                    res.json({ token, _id: user._id })
+                    res.json({ token, _id: user._id, userfirstname:user.userfirstname})
                 }
             })
         }}

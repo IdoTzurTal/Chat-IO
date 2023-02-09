@@ -12,19 +12,22 @@ export default function Chat() {
     const [currentRoom, setCurrentRoom] = useState("")
     const [user, setUser] = useState({
         token: '',
-        _id: ''
+        _id: '',
+        name: ''
     })
 
     useEffect(() => {
         const token = localStorage.getItem('token')
         const _id = localStorage.getItem('id')
+        const name = localStorage.getItem('userfirstname')
         if (!token || !_id) {
             console.error('Token or id Not Found')
             return
         }
         setUser({
             token,
-            _id
+            _id,
+            name
         })
     }, [])
 
@@ -62,14 +65,14 @@ export default function Chat() {
     }, [currentRoom, user.token])
 
     const handleClick = async () => {
-        const sentby = user.userfirstname
+        const sentby = user.name
         setMessages([...messages, { content: messageValue, sentby }])
-        socket.emit('print-message', { content: messageValue, sentby: sentby })
+        socket.emit('print-message', { content: messageValue, sentby })
         socket.on('print-message', message=>{
 
         })
         socket.emit('message', {
-            sentby: sentby,
+            user: user,
             sentdate: new Date(),
             content: messageValue,
         }, "my first room")
@@ -85,7 +88,7 @@ export default function Chat() {
     function join() {
         socket.emit('join-room', Room, () => setCurrentRoom(Room))
     }
-
+    
     return (
         <div className="p-10">
             <input
@@ -119,6 +122,7 @@ export default function Chat() {
             )}
             {messages.map((message, index) => (
                 <p key={index} className="mt-4">
+                    {console.log(message)}
                     {message.sentby}: {message.content}
                 </p>
             ))}
